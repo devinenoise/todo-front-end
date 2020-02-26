@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import TodoApp from './TodoApp.js';
 import './App.css';
 import { 
-    BrowserRouter, 
+    BrowserRouter as Router, 
     Route, 
     Switch,
  } from 'react-router-dom';
 
 
-function App() {
+ export default class App extends Component {
+  render () {
+  
   return (
     <div className="App">
         <header>
-            DO IT OR UNDO IT TODO LIST
+            DO IT OR UNDO IT TO-DO LIST
         </header>
-        <BrowserRouter>
+        <Router>
             <Switch>
                 <Route exact path="/" component={ TodoApp }/>
+                {/* <Route exact path="/login" component= { User }/> */}
             </Switch>
-        </BrowserRouter>
+        </Router>
 
     </div>
   );
 }
-
-export default App;
+}
