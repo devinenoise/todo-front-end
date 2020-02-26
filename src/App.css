@@ -12,6 +12,7 @@ header {
 
 .todos {
   text-transform: capitalize;
+  font-size: 24px;
 }
 
 input {
@@ -20,6 +21,7 @@ input {
   border-bottom: 2px solid black;
   font-family: "Roboto", Arial, Helvetica, sans-serif;
   font-size: 24px;
+  padding: 10px;
 }
 
 .myButton {
@@ -49,5 +51,12 @@ input {
   text-align: center;
   border: 1px solid #476e9e;
   height: 100%;
-  
+}
+
+button {
+	border-radius:10px;
+	cursor:pointer;
+	margin: 5px;
+	padding: 10px;
+	background: red;	
 }

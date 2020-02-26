@@ -35,9 +35,7 @@ export default class TodoApp extends Component {
 
     handleInput = (e) => { this.setState({ todoInput: e.target.value }) };
 
-    handleDelete = async () => {
-        await request.delete(`https://secure-river-88477.herokuapp.com/api/todos${this.state.todo.id}`);
-    }
+
 
     render() {
         return (
@@ -48,10 +46,11 @@ export default class TodoApp extends Component {
                     handleInput={this.handleInput}
                 />
                 {
-                    this.state.todos.map((todo) => <p className="todos"
+                    this.state.todos.map((todo, index) => <p className="todos"
                         style={{
                             textDecoration: todo.complete ? 'line-through' : 'none'
                         }}
+
                         onClick={async () => {
 
                             // lets mutate! make a copy of the array in state
@@ -67,9 +66,23 @@ export default class TodoApp extends Component {
                             //updating the database actually
                             const data = await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo);
 
+                            const deleteTodos = async () => {
+                                return this.state.todos.splice(index, 1);
+                            };
+
                         }} key={todo.id}> {todo.task}
+                        <button className="delete" onClick={async () => {
+                            await request.delete(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`)
+
+                            const deletedTodos = this.state.todos.slice();
+                            deletedTodos.splice(index, 1);
+                            this.setState({ todos: deletedTodos });
+
+                        }}>
+                            <span>🗑️</span> </button>
                     </p>)
                 }
+
 
             </div>
         )
