@@ -42,57 +42,57 @@ export default class TodoApp extends Component {
 
 
     render() {
-        return (
-            <div className="container">
-                <AddTodo
-                    todoInput={this.state.todoInput}
-                    handleClick={this.handleClick}
-                    handleInput={this.handleInput}
-                />
-                {
-                    this.state.todos.map((todo, index) => <p className="todos"
-                        style={{
-                            textDecoration: todo.complete ? 'line-through' : 'none'
-                        }}
+        if (localStorage.getItem('user')) {
+            return (
+                <div className="container">
+                    <h1>Hello!  Let's get doing!</h1>
+                    <AddTodo
+                        todoInput={this.state.todoInput}
+                        handleClick={this.handleClick}
+                        handleInput={this.handleInput}
+                    />
+                    {
+                        this.state.todos.map((todo, index) => <p className="todos"
+                            style={{
+                                textDecoration: todo.complete ? 'line-through' : 'none'
+                            }}
 
-                        onClick={async () => {
+                            onClick={async () => {
 
-                            // lets mutate! make a copy of the array in state
-                            const newTodos = this.state.todos.slice();
+                                // lets mutate! make a copy of the array in state
+                                const newTodos = this.state.todos.slice();
 
-                            // go find whichever todo we're talking about here
-                            const matchingTodo = newTodos.find((thisTodo) => todo.id === thisTodo.id);
+                                // go find whichever todo we're talking about here
+                                const matchingTodo = newTodos.find((thisTodo) => todo.id === thisTodo.id);
 
-                            matchingTodo.complete = !todo.complete
+                                matchingTodo.complete = !todo.complete
 
-                            this.setState({ todos: newTodos });
+                                const user = JSON.parse(localStorage.getItem('user'));
 
+                                this.setState({ todos: newTodos });
 
-                            const user = JSON.parse(localStorage.getItem('user'));
-                            //updating the database actually
-                            const data = await (await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo)).set('Authorization', user.token);
+                                //updating the database actually
+                                const data = await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo).set('Authorization', user.token);
 
-                            const deleteTodos = async () => {
-                                return this.state.todos.splice(index, 1);
-                            };
+                            }} key={todo.id}> {todo.task}
 
-                        }} key={todo.id}> {todo.task}
-                        <button className="delete" onClick={async () => {
+                            <button className="delete" onClick={async () => {
+                                const user = JSON.parse(localStorage.getItem('user'));
 
-                            await request.delete(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`);
+                                await request.delete(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`).set('Authorization', user.token);
 
-                            const deletedTodos = this.state.todos.slice();
-                            deletedTodos.splice(index, 1);
+                                const deletedTodos = this.state.todos.slice();
+                                deletedTodos.splice(index, 1);
 
-                            this.setState({ todos: deletedTodos });
+                                this.setState({ todos: deletedTodos });
 
-                        }}>
-                            <span>Delete To Do</span> </button>
-                    </p>)
-                }
+                            }}>
+                                <span>Delete To Do</span> </button>
+                        </p>)
+                    }
 
-
-            </div>
-        )
+                </div>
+            )
+        }
     }
 }
