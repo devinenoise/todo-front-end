@@ -15,8 +15,9 @@ export default class TodoAppLogin extends Component {
             email: this.state.usernameSignIn,
             password: this.state.passwordSignIn,
         })
-
+        alert('you are now logged in');
         localStorage.setItem('user', JSON.stringify(signIn.body));
+        this.props.history.push('/');
     }
 
     handleSignUp = async () => {
@@ -24,24 +25,25 @@ export default class TodoAppLogin extends Component {
             email: this.state.usernameSignUp,
             password: this.state.passwordSignUp,
         })
-
+        alert('thanks for signing up!');
         localStorage.setItem('user', JSON.stringify(signUp.body));
-        
+        this.props.history.push('/');
+
     }
 
     render() {
         return (
             <div>
-                <div id="welcome">Sign In to start saving your To-Dos!</div>
-                Email <input value={this.state.usernameSignUp} onChange={(e) => this.setState({ usernameSignUp: e.target.value })} /> 
-                Password: <input value={this.state.passwordSignUp} onChange={(e) => this.setState({ passwordSignUp: e.target.value })} />
+                <div id="welcome">Sign Up or Sign In to start tackling your To-Dos!</div>
+                Email <input value={this.state.usernameSignUp} onChange={(e) => this.setState({ usernameSignUp: e.target.value })} />
+                Password: <input value={this.state.passwordSignUp} type="password" onChange={(e) => this.setState({ passwordSignUp: e.target.value })} />
 
-                <button className ="myButton" onClick={this.handleSignUp}>Sign up</button>
+                <button className="myButton" onClick={this.handleSignUp}>Sign up</button>
                 <br />
                 Email: <input value={this.state.usernameSignIn} onChange={(e) => this.setState({ usernameSignIn: e.target.value })} />
-                Password: <input value={this.state.passwordSignIn} onChange={(e) => this.setState({ passwordSignIn: e.target.value })} />
+                Password: <input value={this.state.passwordSignIn} type="password" onChange={(e) => this.setState({ passwordSignIn: e.target.value })} />
 
-                <button className ="myButton" onClick={this.handleSignIn}>Sign in</button>
+                <button className="myButton" onClick={this.handleSignIn}>Sign in</button>
             </div>
         )
     }

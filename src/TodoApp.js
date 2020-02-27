@@ -65,10 +65,10 @@ export default class TodoApp extends Component {
 
                             matchingTodo.complete = !todo.complete
 
-                            const user = JSON.parse(localStorage.getItem('user'));
-
                             this.setState({ todos: newTodos });
 
+
+                            const user = JSON.parse(localStorage.getItem('user'));
                             //updating the database actually
                             const data = await (await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo)).set('Authorization', user.token);
 
