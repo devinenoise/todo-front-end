@@ -10,7 +10,9 @@ export default class TodoApp extends Component {
 
     // getting the list of todos from the database
     componentDidMount = async () => {
-        const todos = await request.get('https://secure-river-88477.herokuapp.com/api/todos')
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        const todos = await request.get('https://secure-river-88477.herokuapp.com/api/todos').set('Authorization', user.token);
 
         this.setState({ todos: todos.body })
     }
@@ -23,6 +25,8 @@ export default class TodoApp extends Component {
             complete: false,
         };
 
+        const user = JSON.parse(localStorage.getItem('user'));
+
         // spread operator
         const newTodos = [...this.state.todos, newTodo];
 
@@ -30,7 +34,7 @@ export default class TodoApp extends Component {
         // updating the database with the user todo input
         const data = await request.post('https://secure-river-88477.herokuapp.com/api/todos', {
             task: this.state.todoInput
-        });
+        }).set('Authorization', user.token);
     }
 
     handleInput = (e) => { this.setState({ todoInput: e.target.value }) };
@@ -61,10 +65,12 @@ export default class TodoApp extends Component {
 
                             matchingTodo.complete = !todo.complete
 
+                            const user = JSON.parse(localStorage.getItem('user'));
+
                             this.setState({ todos: newTodos });
 
                             //updating the database actually
-                            const data = await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo);
+                            const data = await (await request.put(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`, matchingTodo)).set('Authorization', user.token);
 
                             const deleteTodos = async () => {
                                 return this.state.todos.splice(index, 1);
@@ -72,14 +78,16 @@ export default class TodoApp extends Component {
 
                         }} key={todo.id}> {todo.task}
                         <button className="delete" onClick={async () => {
-                            await request.delete(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`)
+
+                            await request.delete(`https://secure-river-88477.herokuapp.com/api/todos/${todo.id}`);
 
                             const deletedTodos = this.state.todos.slice();
                             deletedTodos.splice(index, 1);
+
                             this.setState({ todos: deletedTodos });
 
                         }}>
-                            <span>🗑️</span> </button>
+                            <span>Delete To Do</span> </button>
                     </p>)
                 }
 
