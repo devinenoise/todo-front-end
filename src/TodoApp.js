@@ -87,7 +87,7 @@ export default class TodoApp extends Component {
                                 this.setState({ todos: deletedTodos });
 
                             }}>
-                                <span>Delete To Do</span> </button>
+                                <span>Delete</span> </button>
                         </p>)
                     }
 

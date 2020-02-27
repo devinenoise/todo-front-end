@@ -15,7 +15,7 @@ header {
 
 .todos {
   text-transform: capitalize;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 input {
@@ -57,11 +57,14 @@ input {
 }
 
 .delete  {
-	border-radius:10px;
+	border-radius:5px;
 	cursor:pointer;
-	margin: 5px;
-	padding: 10px;
-	
+	padding: 5px 20px 5px 20px;
+	margin-left: 20px;
+}
+
+.delete:hover  {
+	color: red;
 }
 
 #welcome {
